@@ -15,6 +15,9 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Separator from "@/components/Separator";
+import SocialAuthButtons from "./SocialAuthButtons";
+import Image from "next/image";
 
 export function LoginForm({
   className,
@@ -47,52 +50,82 @@ export function LoginForm({
     }
   };
 
+  const logoSize = 32;
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+      <Card className="flex flex-col gap-8">
+
+        <CardHeader className="text-center flex flex-col items-center">
+          <Image src={'/KCOM_IT3C_LOGO-white.png'} alt="kcom logo" width={logoSize} height={logoSize} className="mb-1" />
+          <CardTitle className="text-2xl">K.COM</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Try logging with Gmail
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form onSubmit={handleLogin}>
-            <div className="flex flex-col gap-6">
+
+          <form onSubmit={handleLogin} noValidate>
+            
+            {/* Form Normal Email and Pass */}
+
+            <div className="flex flex-col gap-8">
+
+              {/* Input Email */}
+
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="Enter your email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
+
               <div className="grid gap-2">
+
+                {/* Input Password */}
+          {/* Forgot pass? */}
+
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/auth/forgot-password"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
                 </div>
                 <Input
                   id="password"
                   type="password"
+                  placeholder="Enter your password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <Link
+                  href="/auth/forgot-password"
+                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                >
+                  Forgot your password?
+                </Link>
+
               </div>
+
+              {/* Error messages and login button */}
+
               {error && <p className="text-sm text-red-500">{error}</p>}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
             </div>
+
+            {/* OAuth */}
+
+            <Separator/>
+            <SocialAuthButtons/>
+
+            {/* Dont have an account? */}
+
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link
@@ -102,6 +135,7 @@ export function LoginForm({
                 Sign up
               </Link>
             </div>
+
           </form>
         </CardContent>
       </Card>
